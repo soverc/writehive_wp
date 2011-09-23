@@ -209,7 +209,7 @@
 									//}, 
 									text: true
 								}).click(function() {
-									jQuery.displayArticle(<?php echo($oArticle->id) ?>, "<?php echo($oArticle->title) ?>");
+									jQuery.displayArticle(<?php echo($oArticle->id) ?>, "<?php echo(esc_html($oArticle->title)) ?>");
 								});
 								
                                 jQuery('#<?php echo($this->getNameSpace()) ?>-syndicate-article-button-<?php echo($oArticle->id) ?>').button({

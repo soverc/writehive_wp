@@ -181,7 +181,7 @@
             <?php if (count($this->getPosts())) : ?>
                 <?php foreach ($this->getPosts() as $oPost) : ?>
                     <tr id="wp-post-<?php echo($oPost->ID) ?>">
-                        <td><?php echo($oPost->post_title) ?><span id="<?php echo($this->getNameSpace()) ?>-wordpress-post-id" style="display:none"><?php echo($oPost->ID) ?></span></td>
+                        <td><?php echo(esc_html($oPost->post_title)) ?><span id="<?php echo($this->getNameSpace()) ?>-wordpress-post-id" style="display:none"><?php echo($oPost->ID) ?></span></td>
                         <td><?php echo(date('F jS, Y', strtotime($oPost->post_date))) ?></td>
                         <td>
 				<?php if (isset($oPost->isSyndicated) && $oPost->isSyndicated == 1) {
