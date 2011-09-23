@@ -93,13 +93,14 @@ $oWriteCrowd = Whv_Actions::getInstance();
 if (is_admin()) {
 
 	$whv_ns = $oWriteCrowd->getNameSpace();
+	$whv_pn = Whv_Config::Get('variables', 'pluginName');
 	if (file_exists(dirname(__FILE__)."/library/whv_admin.php")) {
 		include(dirname(__FILE__)."/library/whv_admin.php");
 		$oWhvAdmin = new Whv_Admin();
 		$oWhvAdmin->wpdb = $wpdb;
 		$oWhvAdmin->ns   = $whv_ns;
-		register_activation_hook(   $whv_ns.'/'.basename(__FILE__), array($oWhvAdmin, 'runInstall'));
-		register_deactivation_hook( $whv_ns.'/'.basename(__FILE__), array($oWhvAdmin, 'runUninstall'));
+		register_activation_hook(   $whv_pn.'/'.basename(__FILE__), array($oWhvAdmin, 'runInstall'));
+		register_deactivation_hook( $whv_pn.'/'.basename(__FILE__), array($oWhvAdmin, 'runUninstall'));
 	}
 
 	// Our Post Submission Ajaxer Server Function
