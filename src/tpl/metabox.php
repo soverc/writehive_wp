@@ -102,8 +102,8 @@
 		*/
 
 		// Create our pretty dropdowns
-		$('#<?php echo($this->getNameSpace()) ?>-selCategoryId').selectmenu();			// Category
-		$('#<?php echo($this->getNameSpace()) ?>-selSecondCategoryId').selectmenu();	// Second Category
+//		$('#<?php echo($this->getNameSpace()) ?>-selCategoryId').selectmenu();			// Category
+//		$('#<?php echo($this->getNameSpace()) ?>-selSecondCategoryId').selectmenu();	// Second Category
 		
 		// Create our pretty button se
 		// $('#<?php echo($this->getNameSpace()) ?>-syndicate-radios').buttonset();
@@ -162,7 +162,7 @@
 							$('#<?php echo($this->getNameSpace()) ?>-subcategory').fadeIn('slow');
 
 							// Make it pretty
-							$('#<?php echo($this->getNameSpace()) ?>-selSubcategoryId').selectmenu();
+//							$('#<?php echo($this->getNameSpace()) ?>-selSubcategoryId').selectmenu();
 						} else {
 	
 							// If unsuccessful set the error
@@ -198,7 +198,7 @@
 						if (oResponse.bSuccess === true) {
 							$('#<?php echo($this->getNameSpace())?>-second-subcategory').html('<span>Second Subcategory</span><p>' + oResponse.sHtml + '</p>');
 							$('#<?php echo($this->getNameSpace()) ?>-second-subcategory').fadeIn('slow');
-							$('#<?php echo($this->getNameSpace()) ?>-selSecondSubcategoryId').selectmenu();
+//							$('#<?php echo($this->getNameSpace()) ?>-selSecondSubcategoryId').selectmenu();
 						} else {
 							$('#<?php echo($this->getNameSpace()) ?>-error-text').append(oResponse.sError);
 							$('#<?php echo($this->getNameSpace()) ?>-error-container').fadeIn('slow');
@@ -209,7 +209,7 @@
 		<?php endif ?>
 
 		<?php if (Whv_Config::Get('variables', 'enableCostSelect')) : ?>
-			$('#<?php echo($this->getNameSpace()) ?>-selCost').selectmenu();
+//			$('#<?php echo($this->getNameSpace()) ?>-selCost').selectmenu();
 		<?php endif ?>
 		
 	});
