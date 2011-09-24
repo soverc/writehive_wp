@@ -84,12 +84,12 @@ class Whv_Config {
 		//load locally first
 		$configDir = dirname(dirname(__FILE__)).'/config/';
 		//I don't know ... 36000 is  10 hours?
-		if (@filemtime($configDir.'whv_config.json') > time()-36000) {
+//		if (@filemtime($configDir.'whv_config.json') > time()-36000) {
 			if ($mJson = file_get_contents( $configDir. 'whv_config.json')) {
 				self::$aConfig = json_decode($mJson, true);
 				return true;
 			}
-		}
+//		}
 
 		// Make the request
 		$rContext = stream_context_create(array(
