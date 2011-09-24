@@ -135,7 +135,7 @@ class Whv_Actions {
 			add_filter('comments_array', array($this, 'handleComments'));
 
 			// Use Our Comments Template
-			add_filter('comments_template', array($this, 'renderComments'));
+//			add_filter('comments_template', array($this, 'renderComments'));
 		}
 
 		return $this;
@@ -667,102 +667,79 @@ class Whv_Actions {
 
 	public function doSyndicateToWordPress() {
 
-		// Check for POST
-		if (!empty($_POST) && !empty($_POST[$this->getNameSpace()])) {
+		if (empty($_POST) || empty($_POST[$this->getNameSpace()])) {
+			$this->setError(Whv_Config::Get('errorMessages', 'noPostData'));
+			return false;
+		}
+		// Set our POST data
+		$aPostData = (array) $_POST[$this->getNameSpace()];
 
-			// Set our POST data
-			$aPostData = (array) $_POST[$this->getNameSpace()];
+		// Check for user account
+		if ($this->checkForOneightyAccount()) {
 
-			// Check for user account
-			if ($this->checkForOneightyAccount()) {
+			// Make the JSON-RPC call
+			$this->feedJson(array(
+				'_method'    => 'fetch',
+				'_key'       => $this->getAccount()->account_key,
+				'article_id' => $this->doSanitize($aPostData['iArticleId'])
+			));
 
-				// Make the JSON-RPC call
-				$this->feedJson(array(
-					'_method'    => 'fetch',
-					'_key'       => $this->getAccount()->account_key,
-					'article_id' => $this->doSanitize($aPostData['iArticleId'])
-				));
-
-				// Check for JSON-RPC errors
-				if (property_exists($this->getRpcResponse(), 'error')) {
-
-					// Set the system error
-					// to the JSON-RPC error
-					$this->setError($this->getRpcResponse()->error);
-
-					// Return false because
-					// there was an error
-					return false;
-				}
-
-				// Create a new WordPress
-				// post and store the ID
-				$iWordPressId = wp_insert_post(array(
-					'post_status'  => 'publish',
-					'post_title'   => $this->doSanitize($this->getRpcResponse()->title),
-					'post_type'    => 'post',
-					'post_name'    => $this->doSanitize($this->getRpcResponse()->name),
-					'post_content' => json_encode(array(
-						'iOneightyId' => $this->doSanitize($this->getRpcResponse()->id)
-					))
-				));
-
-				// Add the 180Create post meta data
-				// into the local WordPress system
-				add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyData')),            mysql_real_escape_string(json_encode($this->getRpcResponse())), true);
-				add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyId')),              $this->doSanitize($this->getRpcResponse()->id),                 true);
-				add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyPullComments')),    true,                                                           true);
-				add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicationDate')), date('Y-m-d H:i:s'),                                            true);
-				add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicated')),      true,                                                           true);
-
-				// All is well, now update
-				// the syndication count
-				$this->feedJson(array(
-					'_method'    => 'syndicate_plus_one',
-					'_key'       => $this->doSanitize($this->getAccount()->account_key),
-					'article_id' => $this->doSanitize($aPostData['iArticleId']),
-					'user_id'    => $this->doSanitize($this->getAccount()->id)
-				));
-
-				// Check for JSON-RPC errors
-				if (property_exists($this->getRpcResponse(), 'error')) {
-
-					// Set the system error to the
-					// JSON-RPC error message
-					$this->setError($this->getRpcResponse()->error);
-
-					// Return false because
-					// there was an error
-					return false;
-				}
-
-				// Check for JSON-RPC success
-				if (property_exists($this->getRpcResponse(), 'success') && $this->getRpcResponse()->success == true) {
-
-					// There are no errors
-					// and all is well,
-					// return true
-					return true;
-
-				} else {
-
-					// Set the system error
-					$this->setError(Whv_Config::Get('errorMessages', 'noSyndicatePlusOne'));
-
-					// Return false because
-					// there was an error
-					return false;
-				}
-			}else {
+			// Check for JSON-RPC errors
+			if (property_exists($this->getRpcResponse(), 'error')) {
 
 				// Set the system error
-				$this->setError(Whv_Config::Get('errorMessages', 'noOneightyAccount'));
+				// to the JSON-RPC error
+				$this->setError($this->getRpcResponse()->error);
+
+				// Return false because
+				// there was an error
+				return false;
+			}
+
+			// Create a new WordPress
+			// post and store the ID
+			$iWordPressId = wp_insert_post(array(
+				'post_status'  => 'publish',
+				'post_title'   => $this->doSanitize($this->getRpcResponse()->title),
+				'post_type'    => 'post',
+				'post_name'    => $this->doSanitize($this->getRpcResponse()->name),
+				'post_content' => json_encode(array(
+					'iOneightyId' => $this->doSanitize($this->getRpcResponse()->id)
+				))
+			));
+
+			// Add the 180Create post meta data
+			// into the local WordPress system
+			add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyData')),            mysql_real_escape_string(json_encode($this->getRpcResponse())), true);
+			add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyId')),              $this->doSanitize($this->getRpcResponse()->id),                 true);
+			add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyPullComments')),    true,                                                           true);
+			add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicationDate')), date('Y-m-d H:i:s'),                                            true);
+			add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicated')),      true,                                                           true);
+
+			// All is well, now update
+			// the syndication count
+			$this->feedJson(array(
+				'_method'    => 'syndicate_plus_one',
+				'_key'       => $this->doSanitize($this->getAccount()->account_key),
+				'article_id' => $this->doSanitize($aPostData['iArticleId']),
+				'user_id'    => $this->doSanitize($this->getAccount()->id)
+			));
+
+			// Check for JSON-RPC errors
+			if (property_exists($this->getRpcResponse(), 'error')) {
+				$this->setError($this->getRpcResponse()->error);
+				return false;
+			}
+
+			// Check for JSON-RPC success
+			if (property_exists($this->getRpcResponse(), 'success') && $this->getRpcResponse()->success == true) {
+				return true;
+			} else {
+				$this->setError(Whv_Config::Get('errorMessages', 'noSyndicatePlusOne'));
 				return false;
 			}
 		} else {
-
-			// Set the system error
-			$this->setError(Whv_Config::Get('errorMessages', 'noPostData'));
+			$this->setError(Whv_Config::Get('errorMessages', 'noOneightyAccount'));
 			return false;
 		}
 	}
@@ -1621,7 +1598,8 @@ class Whv_Actions {
 
 			// If so, load our template
 			// for logged in users
-			$sTemplate = "{$this->getPluginPath()}/".Whv_Config::Get('folders', 'templates')."/{$this->getNameSpace()}_comments.php";
+			//$sTemplate = "{$this->getPluginPath()}/".Whv_Config::Get('folders', 'templates')."/{$this->getNameSpace()}_comments.php";
+			$sTemplate = "{$this->getPluginPath()}/".Whv_Config::Get('folders', 'templates')."/comments.php";
 		}
 		return $sTemplate;
 	}

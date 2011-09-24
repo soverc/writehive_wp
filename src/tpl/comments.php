@@ -1,10 +1,10 @@
-<?php global $o180; ?>
-<?php if ($o180->checkForData('getError')) : ?>
+<?php global $oWriteCrowd; ?>
+<?php if ($oWriteCrowd->checkForData('getError')) : ?>
     <div class="ui-widget">
         <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
             <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
                 <strong>Error:</strong><br>
-                <?php _e($o180->getError()) ?>
+                <?php _e($oWriteCrowd->getError()) ?>
             </p>
         </div>
     </div>
@@ -26,7 +26,7 @@
 
 			<ol class="commentlist" id="oneighty_comments_list">
 				<?php foreach ($comments as $comment) : ?>
-					<?php $o180->renderComment($comment) ?>
+					<?php $oWriteCrowd->renderComment($comment) ?>
 				<?php endforeach ?>
 			</ol>
 
@@ -36,5 +36,6 @@
 				<div class="nav-next"><?php next_comments_link( __( 'Newer Comments <span class="meta-nav">&rarr;</span>', 'twentyten' ) ); ?></div>
 			</div><!-- .navigation -->
 		<?php endif; // check for comment navigation ?>
-	<?php $o180->renderCommentForm() ?>
+<?php comment_form(); ?>
+	<?php //$oWriteCrowd->renderCommentForm() ?>
 </div><!-- #comments -->
