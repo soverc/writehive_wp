@@ -292,7 +292,7 @@ class Whv_Actions {
 					$this->feedJson(array(
 						'_method'    => 'deactivate_article',
 						'_key'       => $this->getAccount()->account_key,
-						'article_id' => $this->getArticle()->aSyndicationData[str_replace('{nameSpace}', $this->getNameSpace(), Whv_Config::Get('wordPress', 'postMetaKeyData'))]->id
+						'article_id' => $this->getArticle()->aSyndicationData[str_replace('{nameSpace}', $this->getNameSpace(), Whv_Config::Get('wordPress', 'postMetaKeyData'))]->article_id
 					));
 
 
@@ -455,7 +455,7 @@ class Whv_Actions {
 								foreach ($aSearchResults as $iIndex => $oArticle) {
 
 									// Check for ID
-									if (in_array($oArticle->id, $aExclude)) {
+									if (in_array($oArticle->article_id, $aExclude)) {
 
 										// If it is in the exclude array
 										// unset the array index
@@ -605,7 +605,7 @@ class Whv_Actions {
 		}
 
 		//syndicate comments
-		$this->doSyndicateComments($this->getArticle()->iWordPressId, $this->doSanitize($this->getRpcResponse()->id));
+		$this->doSyndicateComments($this->getArticle()->iWordPressId, $this->getRpcResponse()->article_id);
 
 
 		// We have a WordPress Post
@@ -626,7 +626,7 @@ class Whv_Actions {
 			'post',
 			$this->getRpcResponse()->name,
 			mysql_real_escape_string(json_encode(array(
-				'iArticleId' => $this->getRpcResponse()->id
+				'iArticleId' => $this->getRpcResponse()->article_id
 			)))
 		), Whv_Config::Get('sqlMiscQueries', 'updateWordPressPost')));
 
@@ -638,7 +638,7 @@ class Whv_Actions {
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicated')),      true,                                                           true);
 
 		// One up the syndication count
-		return $this->doSyndicatePlusOne($this->getAccount()->account_key, $this->getRpcResponse()->id, $this->getAccount()->id);
+		return $this->doSyndicatePlusOne($this->getAccount()->account_key, $this->getRpcResponse()->article_id, $this->getAccount()->id);
 	}
 
 
@@ -706,14 +706,14 @@ class Whv_Actions {
 				'post_type'    => 'post',
 				'post_name'    => $this->doSanitize($this->getRpcResponse()->name),
 				'post_content' => json_encode(array(
-					'iOneightyId' => $this->doSanitize($this->getRpcResponse()->id)
+					'iOneightyId' => $this->doSanitize($this->getRpcResponse()->article_id)
 				))
 			));
 
 			// Add the 180Create post meta data
 			// into the local WordPress system
 			add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyData')),            mysql_real_escape_string(json_encode($this->getRpcResponse())), true);
-			add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyId')),              $this->doSanitize($this->getRpcResponse()->id),                 true);
+			add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyId')),              $this->doSanitize($this->getRpcResponse()->article_id),                 true);
 			add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyPullComments')),    true,                                                           true);
 			add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicationDate')), date('Y-m-d H:i:s'),                                            true);
 			add_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicated')),      true,                                                           true);
@@ -1268,7 +1268,7 @@ class Whv_Actions {
 			$this->feedJson(array(
 				'_method'    => 'grab_comments',
 				'_key'       => $this->getAccount()->account_key,
-				'article_id' => $this->getArticle()->id
+				'article_id' => $this->getArticle()->article_id
 			));
 
 			// Check for RPC errors
@@ -2663,10 +2663,8 @@ class Whv_Actions {
 
 		} else {
 
-			// There was an error while
-			// syndicating the article,
-			// set the system error
-			$this->setError(Whv_Config::Get('errorMessages', 'noSyndicateToWordPress'));
+			$originalError = $this->getError();
+			$this->setError(Whv_Config::Get('errorMessages', 'noSyndicateToWordPress'). '['.$originalError.']');
 
 			// Return unsuccessful ajax
 			$sReturnJson = json_encode(array(

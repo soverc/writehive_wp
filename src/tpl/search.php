@@ -166,7 +166,7 @@
             <tbody>
 
             <?php foreach($this->getSearchResults() as $oArticle) : ?>
-                <tr id="<?php echo($this->getNameSpace()) ?>-article-<?php echo($oArticle->id) ?>">
+                <tr id="<?php echo($this->getNameSpace()) ?>-article-<?php echo($oArticle->article_id) ?>">
                     <td class="post-title">
                         <strong><?php echo($oArticle->title) ?></strong>
 <?php //var_dump(array_keys(get_object_vars($oArticle))); ?>
@@ -174,7 +174,7 @@
 			<?php echo ($oArticle->subcat_label && $oArticle->subcat_label)? ' | ' : ''; ?>
 			<?php echo ($oArticle->subcat_label)? ($oArticle->subcat_label) : ''; ?>
 
-                        <div id="<?php echo($this->getNameSpace()) ?>-article-content-<?php echo($oArticle->id) ?>" style="display:none;">
+                        <div id="<?php echo($this->getNameSpace()) ?>-article-content-<?php echo($oArticle->article_id) ?>" style="display:none;">
                             <?php echo($oArticle->content) ?>
                         </div>
                     </td>
@@ -191,34 +191,34 @@
                     <td>
 			<?php echo($this->generateHtmlButton(
 				'btnViewArticle', 
-				"view-article-button-{$oArticle->id}", 
+				"view-article-button-{$oArticle->article_id}", 
 				'Preview', 
 				array('style'=>'width:6em;')));
 			?>
 			<?php echo($this->generateHtmlButton(
 				'btnSyndicateArticle', 
-				"syndicate-article-button-{$oArticle->id}", 
+				"syndicate-article-button-{$oArticle->article_id}", 
 				'Syndicate', 
 				array('style'=>'width:8em;')));
 			?>
                         <script type="text/javascript">
                             jQuery(function() {
-								jQuery('#<?php echo($this->getNameSpace()) ?>-view-article-button-<?php echo($oArticle->id) ?>').button({
+								jQuery('#<?php echo($this->getNameSpace()) ?>-view-article-button-<?php echo($oArticle->article_id) ?>').button({
 									//icons: {
 									//	primary: 'ui-icon-newwin'
 									//}, 
 									text: true
 								}).click(function() {
-									jQuery.displayArticle(<?php echo($oArticle->id) ?>, "<?php echo(esc_html($oArticle->title)) ?>");
+									jQuery.displayArticle('<?php echo($oArticle->article_id) ?>', "<?php echo(esc_html($oArticle->title)) ?>");
 								});
 								
-                                jQuery('#<?php echo($this->getNameSpace()) ?>-syndicate-article-button-<?php echo($oArticle->id) ?>').button({
+                                jQuery('#<?php echo($this->getNameSpace()) ?>-syndicate-article-button-<?php echo($oArticle->article_id) ?>').button({
 									icons: {
 										primary: 'ui-icon-circle-arrow-s'
 									}, 
 									text: true
 								}).click(function() {
-									jQuery.syndicateComments(<?php echo($oArticle->id) ?>);
+									jQuery.syndicateComments('<?php echo($oArticle->article_id) ?>');
 								});
                             })
                         </script>
