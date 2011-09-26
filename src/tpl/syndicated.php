@@ -90,7 +90,7 @@ jQuery(document).ready(function($) {
                     <tr id="<?php echo($this->getNameSpace()) ?>-article-<?php echo($oArticle->ID) ?>">
                         <td class="post-title">
                             <a href="<?php echo(get_bloginfo('url')) ?>/?p=<?php echo($oArticle->ID) ?>">
-                                <?php esc_html($oArticle->aSyndicationData[$sMetaProperty]->title) ?>
+                                <?php echo esc_html($oArticle->aSyndicationData[$sMetaProperty]->title) ?>
                             </a>
                         </td><td>
                             <?php echo($oArticle->aSyndicationData[$sMetaProperty]->cat_label) ?>
@@ -115,7 +115,7 @@ jQuery(document).ready(function($) {
                                         },
                                         text: false
                                     }).click(function() {
-                                        window.open('<?php esc_html(get_bloginfo('url')) ?>/?p=<?php esc_html($oArticle->ID) ?>');
+                                        window.open('<?php echo esc_html(get_bloginfo('url')) ?>/?p=<?php echo esc_html($oArticle->ID) ?>');
                                     })
                                 });
                             </script>
