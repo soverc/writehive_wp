@@ -6,12 +6,12 @@
 "sqlMiscQueries":{
 	"removeOneightyAccount":"DELETE FROM `{wpdbPrefix}{nameSpace}_accounts` WHERE `iWordPressId` = {wpId};",
 	"retrieveOneightyAccount":"SELECT `oAccount` FROM `{wpdbPrefix}{nameSpace}_accounts` WHERE `iWordPressId` = {wpId};",
-	"storeOneightyAccount":"INSERT INTO `{wpdbPrefix}{nameSpace}_accounts` (`iWordPressId`, `iOneightyId`, `oAccount`) VALUES ('{wpId}', '{returnedAccountId}', '{returnedAccountObject}');",
+	"storeOneightyAccount":"INSERT INTO `{wpdbPrefix}{nameSpace}_accounts` (`iWordPressId`, `sOneightyId`, `oAccount`) VALUES ('{wpId}', '{returnedAccountId}', '{returnedAccountObject}');",
 	"updateWordPressPost":"UPDATE `{wpdbPrefix}`posts SET `post_status` = '{sPostStatus}', `post_title` = '{sPostTitle}', `post_type` = '{sPostType}', `post_name` = '{sPostName}', `post_content` = '{sPostContent}' WHERE `ID` = {iWordPressId};",
-	"retrieveOneightyAccountByOneightyId":"SELECT `oAccount` FROM `{wpdbPrefix}{nameSpace}_accounts` WHERE `iOneightyId` = {iOneightyId};"
+	"retrieveOneightyAccountByOneightyId":"SELECT `oAccount` FROM `{wpdbPrefix}{nameSpace}_accounts` WHERE `sOneightyId` = '{sOneightyId}';"
 },
 "sqlInstallQueries":
-	{"createAccountsTable":"CREATE TABLE IF NOT EXISTS `{wpdbPrefix}{nameSpace}_accounts` (`iLocalId` INT(255) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, `iWordPressId` INT(255) UNSIGNED DEFAULT NULL, `iOneightyId` INT(255) UNSIGNED DEFAULT NULL, `oAccount` TEXT DEFAULT NULL, `aGroups` TEXT DEFAULT NULL) ENGINE=MYISAM AUTO_INCREMENT=1;"
+	{"createAccountsTable":"CREATE TABLE IF NOT EXISTS `{wpdbPrefix}{nameSpace}_accounts` (`iLocalId` INT(255) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, `iWordPressId` INT(255) UNSIGNED DEFAULT NULL, `sOneightyId` CHAR(37) NULL DEFAULT NULL, `oAccount` TEXT DEFAULT NULL, `aGroups` TEXT DEFAULT NULL) ENGINE=MYISAM AUTO_INCREMENT=1;"
 },
 "notificationMessages":{
 	"cannotModifyPost":"If you change your mind and wish to syndicate this post, please goto the WriteHive plugin and select <B>Existing Content<\/B> to syndicate your post. No edits are allowed currently after syndication. Thank you.",

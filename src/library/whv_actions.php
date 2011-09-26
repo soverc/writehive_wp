@@ -189,7 +189,7 @@ class Whv_Actions {
 				} else {
 
 					// Store the account
-					$x = $this->getDatabase()->query(str_replace(array(
+					$storeSql = str_replace(array(
 						'{wpdbPrefix}',
 						'{nameSpace}',
 						'{wpId}',
@@ -199,9 +199,10 @@ class Whv_Actions {
 						$this->getDatabase()->prefix,
 						$this->getNamespace(),
 						$oUser->ID,
-						$this->getRpcResponse()->id,
+						$this->getRpcResponse()->user_id,
 						mysql_real_escape_string(json_encode($this->getRpcResponse()))
-					), Whv_Config::Get('sqlMiscQueries', 'storeOneightyAccount')));
+					), Whv_Config::Get('sqlMiscQueries', 'storeOneightyAccount'));
+					$x = $this->getDatabase()->query($storeSql);
 				}
 			}
 
@@ -444,7 +445,7 @@ class Whv_Actions {
 
 									// Append the ID to the exclusion
 									// array
-									$aExclude[] = $oArticle->iOneightyId;
+									$aExclude[] = $oArticle->sOneightyId;
 								}
 
 								// Now loop through the search
@@ -565,7 +566,7 @@ class Whv_Actions {
 		$aJsonRpcParams = array(
 			'_method'              => 'post',
 			'_key'                 => $this->getAccount()->account_key,
-			'author_id'            => $this->getAccount()->id,
+			'author_id'            => $this->getAccount()->user_id,
 			'content'              => $this->getArticle()->sContent,
 			'title'                => $this->getArticle()->sTitle,
 			'description'          => $this->getArticle()->sExcerpt,
@@ -638,7 +639,7 @@ class Whv_Actions {
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicated')),      true,                                                           true);
 
 		// One up the syndication count
-		return $this->doSyndicatePlusOne($this->getAccount()->account_key, $this->getRpcResponse()->article_id, $this->getAccount()->id);
+		return $this->doSyndicatePlusOne($this->getAccount()->account_key, $this->getRpcResponse()->article_id, $this->getAccount()->user_id);
 	}
 
 
@@ -650,7 +651,7 @@ class Whv_Actions {
 				'_method'      => 'post_comment',
 				'_key'         => $this->getAccount()->account_key,
 				'article_id'   => $whvid,
-				'author_id'    => $this->getAccount()->id,
+				'author_id'    => $this->getAccount()->user_id,
 				'author_name'  => $this->getAccount()->firstname. ' '.$this->getAccount()->firstname,
 				'author_email' => $this->getAccount()->email_address,
 				'author_url'   => $this->getAccount()->website,
@@ -706,7 +707,7 @@ class Whv_Actions {
 				'post_type'    => 'post',
 				'post_name'    => $this->doSanitize($this->getRpcResponse()->name),
 				'post_content' => json_encode(array(
-					'iOneightyId' => $this->doSanitize($this->getRpcResponse()->article_id)
+					'sOneightyId' => $this->doSanitize($this->getRpcResponse()->article_id)
 				))
 			));
 
@@ -856,7 +857,7 @@ class Whv_Actions {
 		$aAccount = $this->getDatabase()->get_results(str_replace(array(
 			'{wpdbPrefix}',
 			'{nameSpace}',
-			'{iOneightyId}'
+			'{sOneightyId}'
 		), array(
 			$this->getDatabase()->prefix,
 			$this->getNamespace(),
@@ -1255,7 +1256,7 @@ class Whv_Actions {
 	 * into the system for the current post being viewed
 	 *
 	 * @package Load
-	 * @param integer $iOneightyId is the article ID
+	 * @param integer $sOneightyId is the article ID
 	 * @return Actions $this for a fluid and chain-loadable interface
 	 */
 	public function loadComments() {

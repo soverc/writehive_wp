@@ -313,7 +313,7 @@
 	   	<!-- Form Submisstion -->
 	   	<p>
 	   		<input name="oneighty_submit_comment" id="oneighty_submit_comment" tabindex="5" value="Submit Comment" type="button">
-	       	<input name="oneighty_comment_post_id" id="oneighty_comment_post_id" value="<?php echo($this->getArticle()->iOneightyId) ?>" type="hidden">
+	       	<input name="oneighty_comment_post_id" id="oneighty_comment_post_id" value="<?php echo($this->getArticle()->sOneightyId) ?>" type="hidden">
 	   	</p>
 	</form>
 </div>
