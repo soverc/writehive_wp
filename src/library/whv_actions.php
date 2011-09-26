@@ -163,11 +163,13 @@ class Whv_Actions {
 				'passwd'   => $this->doSanitize($aPostNameSpace['txtPasswd'])
 			));
 
+			if (!is_object($this->getRpcResponse())) {
+				$this->setError($this->getRpcResponse()->error);
+				return $this;
+			}
 			// Check for a JSON-RPC error
 			if (is_object($this->getRpcResponse()) && property_exists($this->getRpcResponse(), 'error')) {
 
-				// Set the system error to the
-				// JSON-RPC service error
 				$this->setError($this->getRpcResponse()->error);
 			} else {
 
