@@ -29,8 +29,9 @@ class Whv_Admin {
 	 * @return void
 	 */
 	public function runUninstall() {
-
+		//dbdelta does not work with DROP
 		// Delete our accounts table
+		/*
 		dbDelta(str_replace(array(
 			'{wpdbPrefix}',
 			'{nameSpace}'
@@ -38,5 +39,18 @@ class Whv_Admin {
 			$this->wpdb->prefix,
 			$this->ns
 		), Whv_Config::Get('sqlUninstallQueries', 'dropAccountsTable')));
+		 */
+		global $table_prefix, $table_suffix, $wpdb;
+		$wpdb->query(
+			str_replace(
+				array(
+					'{wpdbPrefix}',
+					'{nameSpace}'
+				), array(
+					$this->wpdb->prefix,
+					$this->ns
+				), 
+				Whv_Config::Get('sqlUninstallQueries', 'dropAccountsTable'))
+		);
 	}
 }
