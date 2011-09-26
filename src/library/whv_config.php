@@ -4,8 +4,8 @@
  * This class is a class that takes an INI file, 
  * parses it and returns variables to the caller
  * 
- * @author WriteCrowd <support@writecrowd.com>
- * @link   https://www.writecrowd.com/
+ * @author WriteCrowd <support@writehive.com>
+ * @link   https://www.writehive.com/
  * @license GPL
  *
  **/
@@ -103,7 +103,7 @@ class Whv_Config {
 		));
 
 		// Send the request
-		$mResponse = file_get_contents('https://www.writecrowd.com/feeds/json', false, $rContext);
+		$mResponse = file_get_contents('https://writehive.com/feeds/json', false, $rContext);
 
 		// Check for data
 		if (!empty($mResponse)) {
