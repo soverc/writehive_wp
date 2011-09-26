@@ -632,7 +632,7 @@ class Whv_Actions {
 
 		// Add our post meta data
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyData')),            mysql_real_escape_string(json_encode($this->getRpcResponse())), true);
-		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyId')),              $this->doSanitize($this->getRpcResponse()->id),                 true);
+		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyId')),              $this->doSanitize($this->getRpcResponse()->article_id),                 true);
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyPullComments')),    true,                                                           true);
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicationDate')), date('Y-m-d H:i:s'),                                            true);
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicated')),      true,                                                           true);
