@@ -7,7 +7,7 @@
  * @param {Object} oElement is the dialog to change
  * @param {String} sErrorText is the error string we wish to display
 **/
-function oneightyGenerateError(oElement, sErrorText) {
+function whvGenerateError(oElement, sErrorText) {
 	
 	// Store previous content
 	var sOriginalHtml = oElement.html();
@@ -43,7 +43,7 @@ function oneightyGenerateError(oElement, sErrorText) {
  * @param {Object} oElement is the element to change
  * @param {String} sNotificationText is the text string we wish to display
 **/
-function oneightyGenerateNotice(oElement, sNotificationText) {
+function whvGenerateNotice(oElement, sNotificationText) {
 	
 	// Build the overlay HTML
 	var sOverlay  = '<div class="ui-widget"><div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">'; 
@@ -62,7 +62,7 @@ function oneightyGenerateNotice(oElement, sNotificationText) {
  * @param {Object} oFields is a dictionary of field objects
  * @return {Object} oReturn is an object of failed fields and overall validation pass/fail
 **/
-function oneightyValidateForm(oFields) {
+function whvValidateForm(oFields) {
 	
 	// create the return placeholder
 	var oReturn = {
