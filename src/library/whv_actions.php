@@ -2910,9 +2910,10 @@ class Whv_Actions {
 				'content' => json_encode($aData)
 			)));
 
+		stream_context_set_option($rContext, 'ssl', 'allow_self_signed', true);
+		stream_context_set_option($rContext, 'ssl', 'verify_peer', false);
 		// Send the request
 		$mResponse = file_get_contents(Whv_Config::Get('feeds', 'jsonRpc'), false, $rContext);
-
 		// Check for data
 		if (!empty($mResponse)) {
 
