@@ -2,7 +2,7 @@
 "styleSheets":
 {"base":"css\/oneighty.css","jQueryUi":"css\/jquery.ui.start.css"},
 "sqlUninstallQueries":
-{"dropAccountsTable":"DROP TABLE `{wpdbPrefix}{nameSpace}_account`;"},
+{"dropAccountsTable":"DROP TABLE `{wpdbPrefix}{nameSpace}_accounts`;"},
 "sqlMiscQueries":
 {"removeOneightyAccount":"DELETE FROM `{wpdbPrefix}{nameSpace}_accounts` WHERE `iWordPressId` = {wpId};","retrieveOneightyAccount":"SELECT `oAccount` FROM `{wpdbPrefix}{nameSpace}_accounts` WHERE `iWordPressId` = {wpId};","storeOneightyAccount":"INSERT INTO `{wpdbPrefix}{nameSpace}_accounts` (`iWordPressId`, `iOneightyId`, `oAccount`) VALUES ('{wpId}', '{returnedAccountId}', '{returnedAccountObject}');","updateWordPressPost":"UPDATE `{wpdbPrefix}`posts SET `post_status` = '{sPostStatus}', `post_title` = '{sPostTitle}', `post_type` = '{sPostType}', `post_name` = '{sPostName}', `post_content` = '{sPostContent}' WHERE `ID` = {iWordPressId};","retrieveOneightyAccountByOneightyId":"SELECT `oAccount` FROM `{wpdbPrefix}{nameSpace}_accounts` WHERE `iOneightyId` = {iOneightyId};"},
 "sqlInstallQueries":
