@@ -5,7 +5,7 @@
  * syndication services inside of WordPress.
  * 
  * @author WriteCrowd <support@writecrowd.com>
- * @version 0.9
+ * @version 0.98d
  * @link https://www.writecrowd.com/
  * @copyright 2011 WriteCrowd <https://www.writecrowd.com/>
  * @license GPL 3.0
