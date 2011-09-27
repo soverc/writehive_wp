@@ -67,4 +67,16 @@
 			</tr>
 		</table>
 	</div>
+
+	<?php
+	if ( ini_get('magic_quotes_runtime') 
+		|| ini_get('magic_quotes_gpc') 
+	):  ?>
+	<div class="ui-widget" id="<?php echo($this->getNameSpace()) ?>-error-container">
+		<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+			<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+			<span id="<?php echo($this->getNameSpace()) ?>-error-text"><b>magic_quotes_runtime</b> or <b>magic_quotes_gpc</b> is enabled.  You may notice strange results when syndicating content.</span>
+		</div>
+	</div>
+	<?php endif; ?>
 </div>
