@@ -1882,10 +1882,11 @@ class Whv_Actions {
 
 			// Set the title
 			$sContent  = $this->getArticle()->aSyndicationData[$sMetaProperty]->content;
-			$sContent .= '<p><center>Originally published at: <a href="'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_url.'">'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_blog.'</a></center></p>';
+//			$sContent .= '<p><center>Originally published at: <a href="'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_url.'">'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_blog.'</a></center></p>';
 			$sContent .= '<p><center><a href="'.Whv_Config::Get('urls', 'baseUrl').'">';
-			$sContent .= '<img src="'.Whv_Config::Get('urls', 'baseUrl').'/images/syndicated.png" alt="Syndicated at '.Whv_Config::Get('variables', 'appName').'">';
-			$sContent .= '</a></center></p>';
+			$sContent .= '<img style="vertical-align:top" src="'.Whv_Config::Get('urls', 'baseUrl').'/images/syndicated.png" alt="Syndicated at '.Whv_Config::Get('variables', 'appName').'">';
+	//		$sContent .= '</a></center></p>';
+			$sContent .= '</a>from:&nbsp;<a href="'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_url.'">'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_blog.'</a></center></p>';
 //			$sContent .= '<script type="text/javascript">';
 //			$sContent .= 'jQuery(\'.entry-meta\').html(\'<p><em>By </em><strong><a href="'.Whv_Config::Get('urls', 'baseUrl').'/user/'.$this->getArticle()->aSyndicationData[$sMetaProperty]->author_name.'">'.$this->getArticle()->aSyndicationData[$sMetaProperty]->author_name.'</a></strong><em>, Originally Published at </em><a href="'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_url.'">'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_url.'</a></p>\');';
 //			$sContent .= '</script>';
