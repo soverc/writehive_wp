@@ -156,11 +156,10 @@
             <thead>
                 <tr>
                     <th width="42%"><?php _e('Article Name') ?></th>
-                    <th width="10%"><?php _e('Syndications') ?></th>
-                    <th width="8%"><?php _e('Comments') ?></th>
-                    <th width="10%"><?php _e('Date Created') ?></th>
-                    <th width="6%"><?php _e('Cost') ?></th>
-                    <th width="24%"><?php _e('Actions') ?></th>
+                    <th width="12%"><?php _e('Syndications') ?></th>
+                    <th width="12%"><?php _e('Date Created') ?></th>
+                    <th width="8%"><?php _e('Cost') ?></th>
+                    <th width="26%"><?php _e('Actions') ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -179,7 +178,6 @@
                         </div>
                     </td>
                     <td><?php echo($oArticle->syndications) ?></td>
-                    <td><?php echo($oArticle->comments) ?></td>
                     <td><?php echo(date('M jS, Y', strtotime($oArticle->date_created))) ?></td>
                     <td>
                         <?php if (0.00 == $oArticle->cost) : ?>
