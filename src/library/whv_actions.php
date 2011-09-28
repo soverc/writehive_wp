@@ -1882,7 +1882,7 @@ class Whv_Actions {
 
 			// Set the title
 			$sContent  = $this->getArticle()->aSyndicationData[$sMetaProperty]->content;
-			$sContent .= '<p><center>From the blog <a href="'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_url.'">'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_blog.'</a></center></p>';
+			$sContent .= '<p><center>Originally published at: <a href="'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_url.'">'.$this->getArticle()->aSyndicationData[$sMetaProperty]->from_blog.'</a></center></p>';
 			$sContent .= '<p><center><a href="'.Whv_Config::Get('urls', 'baseUrl').'">';
 			$sContent .= '<img src="'.Whv_Config::Get('urls', 'baseUrl').'/images/syndicated.png" alt="Syndicated at '.Whv_Config::Get('variables', 'appName').'">';
 			$sContent .= '</a></center></p>';
