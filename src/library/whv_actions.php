@@ -605,9 +605,6 @@ class Whv_Actions {
 			return false;
 		}
 
-		//syndicate comments
-		$this->doSyndicateComments($this->getArticle()->iWordPressId, $this->getRpcResponse()->article_id);
-
 
 		// We have a WordPress Post
 		// now update the post
@@ -623,9 +620,9 @@ class Whv_Actions {
 			$this->getDatabase()->prefix,
 			$this->getArticle()->iWordPressId,
 			'publish',
-			$this->getRpcResponse()->title,
+			addslashes($this->getRpcResponse()->title),
 			'post',
-			$this->getRpcResponse()->name,
+			addslashes($this->getRpcResponse()->name),
 			mysql_real_escape_string(json_encode(array(
 				'iArticleId' => $this->getRpcResponse()->article_id
 			)))
@@ -633,10 +630,18 @@ class Whv_Actions {
 
 		// Add our post meta data
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyData')),            mysql_real_escape_string(json_encode($this->getRpcResponse())), true);
+
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyId')),              $this->doSanitize($this->getRpcResponse()->article_id),                 true);
+
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyPullComments')),    true,                                                           true);
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicationDate')), date('Y-m-d H:i:s'),                                            true);
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicated')),      true,                                                           true);
+
+		//syndicate comments
+		//must be done after using $this->getRpcResponse() as
+		// feedJson() sets a new one on good calls
+		$this->doSyndicateComments($this->getArticle()->iWordPressId, $this->getRpcResponse()->article_id);
+
 
 		// One up the syndication count
 		return $this->doSyndicatePlusOne($this->getAccount()->account_key, $this->getRpcResponse()->article_id, $this->getAccount()->user_id);
@@ -891,8 +896,11 @@ class Whv_Actions {
 	 */
 	public function checkIfOneightyArticle($iWordPressId) {
 
+		$ns = $this->getNamespace();
+		$pmks = str_replace('{nameSpace}', $ns, Whv_Config::Get('wordPress', 'postMetaKeySyndicated'));
+		$pmkd = str_replace('{nameSpace}', $ns, Whv_Config::Get('wordPress', 'postMetaKeyData'));
 		// Check for an article count
-		if (!empty($iWordPressId) && (intval(get_post_meta($iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicated')), true)) == true)) {
+		if (!empty($iWordPressId) && (intval(get_post_meta($iWordPressId, $pmks, true)) == 1)) {
 
 			// Grab the article from
 			// the local database
@@ -909,7 +917,7 @@ class Whv_Actions {
 			foreach (get_post_custom_keys($iWordPressId) as $sMetaKey) {
 
 				// Make sure it is one of ours
-				if (strpos($sMetaKey, $this->getNameSpace()) !== false) {
+				if (strpos($sMetaKey, $ns) !== false) {
 
 					// It's one of ours, now
 					// grab and set the value
@@ -918,7 +926,7 @@ class Whv_Actions {
 			}
 
 			// Decode the syndication data
-			$oArticle->aSyndicationData[str_replace('{nameSpace}', $this->getNameSpace(), Whv_Config::Get('wordPress', 'postMetaKeyData'))] = json_decode($oArticle->aSyndicationData[str_replace('{nameSpace}', $this->getNameSpace(), Whv_Config::Get('wordPress', 'postMetaKeyData'))]);
+			$oArticle->aSyndicationData[$pmkd] = json_decode($oArticle->aSyndicationData[$pmkd]);
 
 			// Set the article into the system
 			$this->setArticle($oArticle);
@@ -1193,20 +1201,21 @@ class Whv_Actions {
 			wp_register_script("{$this->getNamespace()}-jquery-ui-all", "{$this->getPluginWebPath()}/".Whv_Config::Get('javaScripts', 'jQueryUi'));
 
 			//  Register the latest jQueryUI Select Menu Plugin
-			wp_register_script("{$this->getNamespace()}-jquery-ui-selectmenu", "{$this->getPluginWebPath()}/".Whv_Config::Get('javaScripts', 'jQueryUiSelectMenu'));
+//			wp_register_script("{$this->getNamespace()}-jquery-ui-selectmenu", "{$this->getPluginWebPath()}/".Whv_Config::Get('javaScripts', 'jQueryUiSelectMenu'));
 
 			// Register the latest jQuery Validation
 			// plugin from the jQuery repository
-			wp_register_script("{$this->getNamespace()}-jquery-validate", "{$this->getPluginWebPath()}/".Whv_Config::Get('javaScripts', 'jQueryValidate'));
+//			wp_register_script("{$this->getNamespace()}-jquery-validate", "{$this->getPluginWebPath()}/".Whv_Config::Get('javaScripts', 'jQueryValidate'));
 
 			// Load our base functions
-			wp_enqueue_script("{$this->getNamespace()}-base");
+//			wp_enqueue_script("{$this->getNamespace()}-base");
 
 			// Load jQueryUI
-			wp_enqueue_script("{$this->getNamespace()}-jquery-ui-all");
+//			wp_enqueue_script("{$this->getNamespace()}-jquery-ui-all");
+			wp_enqueue_script("jquery-ui-dialog");
 
 			// Load jQueryUi Select Menu
-			wp_enqueue_script("{$this->getNamespace()}-jquery-ui-selectmenu");
+//			wp_enqueue_script("{$this->getNamespace()}-jquery-ui-selectmenu");
 
 			// Load jQuery Validate
 			wp_enqueue_script("{$this->getNamespace()}-jquery-validate");
