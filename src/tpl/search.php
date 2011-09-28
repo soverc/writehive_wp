@@ -165,6 +165,7 @@
             <tbody>
 
             <?php foreach($this->getSearchResults() as $oArticle) : ?>
+		<?php if (empty ($oArticle->article_id)) continue; ?>
                 <tr id="<?php echo($this->getNameSpace()) ?>-article-<?php echo($oArticle->article_id) ?>">
                     <td class="post-title">
                         <strong><?php echo($oArticle->title) ?></strong>
@@ -191,13 +192,13 @@
 				'btnViewArticle', 
 				"view-article-button-{$oArticle->article_id}", 
 				'Preview', 
-				array('style'=>'width:6em;')));
+				array('style'=>'width:6.2em;')));
 			?>
 			<?php echo($this->generateHtmlButton(
 				'btnSyndicateArticle', 
 				"syndicate-article-button-{$oArticle->article_id}", 
 				'Syndicate', 
-				array('style'=>'width:8em;')));
+				array('style'=>'width:8.2em;')));
 			?>
                         <script type="text/javascript">
                             jQuery(function() {
