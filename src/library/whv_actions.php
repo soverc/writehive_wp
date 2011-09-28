@@ -164,7 +164,7 @@ class Whv_Actions {
 			));
 
 			if (!is_object($this->getRpcResponse())) {
-				$this->setError($this->getRpcResponse()->error);
+				$this->setError(Whv_Config::Get('errorMessages', 'noWordPressUserLoggedIn'));
 				return $this;
 			}
 			// Check for a JSON-RPC error
