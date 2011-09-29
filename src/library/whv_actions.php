@@ -1199,12 +1199,12 @@ class Whv_Actions {
 			//  Register the latest jQueryUI Select Menu Plugin
 //			wp_register_script("{$this->getNamespace()}-jquery-ui-selectmenu", "{$this->getPluginWebPath()}/".Whv_Config::Get('javaScripts', 'jQueryUiSelectMenu'));
 
-			// Register the latest jQuery Validation
-			// plugin from the jQuery repository
-//			wp_register_script("{$this->getNamespace()}-jquery-validate", "{$this->getPluginWebPath()}/".Whv_Config::Get('javaScripts', 'jQueryValidate'));
-
 			// Load our base functions
-//			wp_enqueue_script("{$this->getNamespace()}-base");
+			wp_enqueue_script("{$this->getNamespace()}-base");
+
+			// Register the latest jQuery Validation
+			wp_register_script("{$this->getNamespace()}-jquery-validate", "{$this->getPluginWebPath()}/".Whv_Config::Get('javaScripts', 'jQueryValidate'));
+
 
 			// Load jQueryUI
 //			wp_enqueue_script("{$this->getNamespace()}-jquery-ui-all");

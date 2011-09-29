@@ -35,7 +35,7 @@
 			$('#<?php echo($this->getNameSpace()) ?>-post-data').find('input, textarea, button, select').attr('disabled','disabled');
 
 			// Set the notification
-			oneightyGenerateNotice($('#<?php echo($this->getNameSpace()) ?>-post-data'), '<?php echo(Whv_Config::Get('notificationMessages', 'cannotModifyPost')) ?>');
+			whvGenerateNotice($('#<?php echo($this->getNameSpace()) ?>-post-data'), '<?php echo(Whv_Config::Get('notificationMessages', 'cannotModifyPost')) ?>');
 		}
 		
 		<?php if (!$this->checkForData('getError')) : ?>
@@ -321,7 +321,7 @@
 		</p>
 	</div>
 	
-	<div class="ui-widget" id="<?php echo($this->getNameSpace()) ?>-error-container">
+	<div class="ui-widget" id="<?php echo($this->getNameSpace()) ?>-error-container" style="display:none">
 		<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
 			<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
 				<?php if ($this->checkForData('getError') || $this->getError()) : ?> 
