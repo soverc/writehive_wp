@@ -174,9 +174,6 @@
 			<?php echo ($oArticle->subcat_label && $oArticle->subcat_label)? ' | ' : ''; ?>
 			<?php echo ($oArticle->subcat_label)? ($oArticle->subcat_label) : ''; ?>
 
-                        <div id="<?php echo($this->getNameSpace()) ?>-article-content-<?php echo($oArticle->article_id) ?>" style="display:none;">
-                            <?php //echo($oArticle->content) ?>
-                        </div>
                     </td>
                     <td><?php echo($oArticle->syndications) ?></td>
                     <td><?php echo(date('M jS, Y', strtotime($oArticle->date_created))) ?></td>
@@ -200,27 +197,6 @@
 				'Syndicate', 
 				array('style'=>'width:8.2em;')));
 			?>
-                        <script type="text/javascript">
-                            jQuery(function() {
-								jQuery('#<?php echo($this->getNameSpace()) ?>-view-article-button-<?php echo($oArticle->article_id) ?>').button({
-									//icons: {
-									//	primary: 'ui-icon-newwin'
-									//}, 
-									text: true
-								}).click(function() {
-									jQuery.displayArticle('<?php echo($oArticle->article_id) ?>', "<?php echo(esc_html($oArticle->title)) ?>");
-								});
-								
-                                jQuery('#<?php echo($this->getNameSpace()) ?>-syndicate-article-button-<?php echo($oArticle->article_id) ?>').button({
-									icons: {
-										primary: 'ui-icon-circle-arrow-s'
-									}, 
-									text: true
-								}).click(function() {
-									jQuery.syndicateComments('<?php echo($oArticle->article_id) ?>');
-								});
-                            })
-                        </script>
                     </td>
                 </tr>
             <?php endforeach ?>
@@ -228,6 +204,38 @@
             </tbody>
             <tfoot></tfoot>
         </table>
+
+
+            <script type="text/javascript">
+//<!--
+            <?php foreach($this->getSearchResults() as $oArticle) : ?>
+		    jQuery(function() {
+			jQuery('#<?php echo($this->getNameSpace()) ?>-view-article-button-<?php echo($oArticle->article_id) ?>').button({
+				text: true
+			}).click(function() {
+				jQuery.displayArticle('<?php echo($oArticle->article_id) ?>', "<?php echo(esc_html($oArticle->title)) ?>");
+			});
+							
+			jQuery('#<?php echo($this->getNameSpace()) ?>-syndicate-article-button-<?php echo($oArticle->article_id) ?>').button({
+				icons: {
+					primary: 'ui-icon-circle-arrow-s'
+				}, 
+				text: true
+			}).click(function() {
+				jQuery.syndicateComments('<?php echo($oArticle->article_id) ?>');
+			});
+		    });
+
+            <?php endforeach ?>
+//  -->
+            </script>
+
+            <?php foreach($this->getSearchResults() as $oArticle) : ?>
+		<div id="<?php echo($this->getNameSpace()) ?>-article-content-<?php echo($oArticle->article_id) ?>" style="display:none;">
+		    <?php echo  nl2br(substr(trim(strip_tags($oArticle->content)), 0, 600)); ?>
+		</div>
+            <?php endforeach ?>
+
     <?php endif ?>
 </div>
 <div id="<?php echo($this->getNameSpace()) ?>-article-preview"></div>
