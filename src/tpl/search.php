@@ -232,7 +232,7 @@
 
             <?php foreach($this->getSearchResults() as $oArticle) : ?>
 		<div id="<?php echo($this->getNameSpace()) ?>-article-content-<?php echo($oArticle->article_id) ?>" style="display:none;">
-		    <?php echo  nl2br(substr(trim(strip_tags($oArticle->content)), 0, 600)); ?>
+		    <?php echo  $oArticle->content; ?>
 		</div>
             <?php endforeach ?>
 
