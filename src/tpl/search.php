@@ -175,7 +175,7 @@
 			<?php echo ($oArticle->subcat_label)? ($oArticle->subcat_label) : ''; ?>
 
                         <div id="<?php echo($this->getNameSpace()) ?>-article-content-<?php echo($oArticle->article_id) ?>" style="display:none;">
-                            <?php echo($oArticle->content) ?>
+                            <?php //echo($oArticle->content) ?>
                         </div>
                     </td>
                     <td><?php echo($oArticle->syndications) ?></td>
