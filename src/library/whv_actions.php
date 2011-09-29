@@ -615,18 +615,14 @@ class Whv_Actions {
 			'{sPostTitle}',
 			'{sPostType}',
 			'{sPostName}',
-			'{sPostContent}'
 		), array(
 			$this->getDatabase()->prefix,
 			$this->getArticle()->iWordPressId,
 			'publish',
 			addslashes($this->getRpcResponse()->title),
 			'post',
-			addslashes($this->getRpcResponse()->name),
-			mysql_real_escape_string(json_encode(array(
-				'iArticleId' => $this->getRpcResponse()->article_id
-			)))
-		), Whv_Config::Get('sqlMiscQueries', 'updateWordPressPost')));
+			addslashes($this->getRpcResponse()->name)
+		), Whv_Config::Get('sqlMiscQueries', 'updateWordPressSyndicateUp')));
 
 		// Add our post meta data
 		add_post_meta($this->getArticle()->iWordPressId, str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeyData')),            mysql_real_escape_string(json_encode($this->getRpcResponse())), true);
