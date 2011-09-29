@@ -6,6 +6,7 @@
 "sqlMiscQueries":{
 	"removeOneightyAccount":"DELETE FROM `{wpdbPrefix}{nameSpace}_accounts` WHERE `iWordPressId` = {wpId};",
 	"retrieveOneightyAccount":"SELECT `oAccount` FROM `{wpdbPrefix}{nameSpace}_accounts` WHERE `iWordPressId` = {wpId};",
+	"retrieveOneightyArticles":"SELECT `meta_value` as sOneightyId FROM `{wpdbPrefix}postmeta` WHERE `meta_key` = '{nameSpace}ArticleId';",
 	"storeOneightyAccount":"INSERT INTO `{wpdbPrefix}{nameSpace}_accounts` (`iWordPressId`, `sOneightyId`, `oAccount`) VALUES ('{wpId}', '{returnedAccountId}', '{returnedAccountObject}');",
 	"updateWordPressPost":"UPDATE `{wpdbPrefix}posts` SET `post_status` = '{sPostStatus}', `post_title` = '{sPostTitle}', `post_type` = '{sPostType}', `post_name` = '{sPostName}', `post_content` = '{sPostContent}' WHERE `ID` = {iWordPressId};",
 	"updateWordPressSyndicatedUp":"UPDATE `{wpdbPrefix}posts` SET `post_status` = '{sPostStatus}', `post_title` = '{sPostTitle}', `post_type` = '{sPostType}', `post_name` = '{sPostName}' WHERE `ID` = {iWordPressId};",

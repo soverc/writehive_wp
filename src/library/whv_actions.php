@@ -433,50 +433,42 @@ class Whv_Actions {
 							$aArticles = $this->getDatabase()->get_results($sArticlesQuery);
 
 							// Check for results
-							if (count($aArticles)) {
-
-								// We have results, create
-								// the exclusion array
-								$aExclude = array();
-
-								// Loop through the local IDs
-								// and append them
-								foreach ($aArticles as $oArticle) {
-
-									// Append the ID to the exclusion
-									// array
-									$aExclude[] = $oArticle->sOneightyId;
-								}
-
-								// Now loop through the search
-								// results and check id the ID
-								// is in the exclusion array
-								$aSearchResults = $this->getRpcResponse();
-
-								foreach ($aSearchResults as $iIndex => $oArticle) {
-
-									// Check for ID
-									if (in_array($oArticle->article_id, $aExclude)) {
-
-										// If it is in the exclude array
-										// unset the array index
-										unset($aSearchResults[$iIndex]);
-									}
-								}
-
-								// Set the system search results
-								$this->setSearchResults($aSearchResults);
-
-								return $this;
-
+							if (!count($aArticles)) {
 								// Nothing has been syndicated yet
-							} else {
-
-								// Set the system search results
 								$this->setSearchResults($this->getRpcResponse());
-
 								return $this;
 							}
+
+							// We have results, create
+							// the exclusion array
+							$aExclude = array();
+
+							// Loop through the local IDs
+							// and append them
+							foreach ($aArticles as $oArticle) {
+								$aExclude[] = $oArticle->sOneightyId;
+							}
+
+							// Now loop through the search
+							// results and check id the ID
+							// is in the exclusion array
+							$aSearchResults = $this->getRpcResponse();
+
+							foreach ($aSearchResults as $iIndex => $oArticle) {
+
+								// Check for ID
+								if (in_array($oArticle->article_id, $aExclude)) {
+
+									// If it is in the exclude array
+									// unset the array index
+									unset($aSearchResults[$iIndex]);
+								}
+							}
+
+							// Set the system search results
+							$this->setSearchResults($aSearchResults);
+
+							return $this;
 
 							// Catch all exceptions
 						} catch (Exception $oException) {
