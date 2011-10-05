@@ -168,7 +168,7 @@
 		<?php if (empty ($oArticle->article_id)) continue; ?>
                 <tr id="<?php echo($this->getNameSpace()) ?>-article-<?php echo($oArticle->article_id) ?>">
                     <td class="post-title">
-                        <strong><?php echo($oArticle->title) ?></strong>
+                        <strong><?php echo(htmlspecialchars($oArticle->title, ENT_QUOTES)) ?></strong>
 <?php //var_dump(array_keys(get_object_vars($oArticle))); ?>
 			<?php echo ($oArticle->cat_label)? ($oArticle->cat_label) : ''; ?>
 			<?php echo ($oArticle->subcat_label && $oArticle->subcat_label)? ' | ' : ''; ?>
