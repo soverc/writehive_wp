@@ -4,10 +4,10 @@
  * loading all of the libraries necessary to use
  * syndication services inside of WordPress.
  * 
- * @author WriteCrowd <support@writecrowd.com>
- * @version 0.98d
- * @link https://www.writecrowd.com/
- * @copyright 2011 WriteCrowd <https://www.writecrowd.com/>
+ * @author WriteHive <support@writehive.com>
+ * @version 1.0
+ * @link https://www.writehive.com/
+ * @copyright 2011 WriteCrowd <https://www.writehive.com/>
  * @license GPL 3.0
  * 
  * WriteCrowd is free software: you can redistribute it and/or modify
@@ -28,11 +28,11 @@
  * **********************************************
  *
  * Plugin Name: WriteHive Syndication
- * Plugin URI: https://www.Writecrowd.com/
- * Description: Provides functionality necessary to use your WriteCrowd account inside of WordPress.
- * Version: 0.9 Beta Build 091420111233
- * Author: WriteCrowd
- * Author URI: https://www.writecrowd.com/
+ * Plugin URI: https://www.writehive.com/
+ * Description: Provides functionality necessary to use your WriteHive account inside of WordPress.
+ * Version: 1.0
+ * Author: WriteHive
+ * Author URI: https://www.writehive.com/
  * License: GPL 3.0
  *
 **/
