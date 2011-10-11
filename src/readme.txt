@@ -4,7 +4,7 @@ Donate link: http://www.writehive.com/
 Tags: syndication,aggregator,aggregation,plugin,RSS,comments,Atom,feed,content,post,article,fresh content,white label,monetize,monetization
 Requires at least: 2.8
 Tested up to: 3.2.1
-Stable tag: 1.0.1
+Stable tag: trunk
 
 The WriteHive WP plugin allows for passionate writers and publishers to leverage syndication.
 
