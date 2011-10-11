@@ -130,13 +130,13 @@ class Whv_Actions {
 
 		// Set all of the functions and controls
 		// Display Post Title
-		add_filter('the_title', array($this, 'renderPostTitle'));
+//		add_filter('the_title', array($this, 'renderPostTitle'));
 
 		// Determine if we want to display our comments
 		if (Whv_Config::Get('variables', 'enableCommentEngine')) {
 
 			// Run when displaying Comments for a single post
-			add_filter('comments_array', array($this, 'handleComments'));
+//			add_filter('comments_array', array($this, 'handleComments'));
 
 			// Use Our Comments Template
 //			add_filter('comments_template', array($this, 'renderComments'));
