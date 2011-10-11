@@ -92,6 +92,10 @@ class Whv_Actions {
 	 */
 	private function __construct() {
 
+		//if (get_magic_quotes_runtime())
+		//set_magic_quotes_runtime(0);
+		//	echo '1';
+
 		// Check to see if an admin
 		// has logged into the system
 		if (is_admin()) {
@@ -301,6 +305,7 @@ class Whv_Actions {
 					return true;
 
 				} else {
+					die('no');
 
 					// Try to remove the article
 					// from the WordPress DB
@@ -830,10 +835,10 @@ class Whv_Actions {
 			return true;
 		} else {
 
-			// There is no user account
-			// set the system error and
-			// return false
-			$this->setError(Whv_Config::Get('errorMessages', 'noOneightyAccount'));
+			//this "Error" will show a huge red error box the first time anybody 
+			// uses/sees this plugin.  This makes a bad UX, need to explain 
+			// how to use the plugin w/o throwing an error in their face.
+//			$this->setError(Whv_Config::Get('errorMessages', 'noOneightyAccount'));
 			return false;
 		}
 	}
@@ -943,13 +948,14 @@ class Whv_Actions {
 	 */
 	public function loadAdminMenu() {
 
+		$_appName = Whv_Config::Get('variables', 'appName');
 		// Setup the parent menu
 		add_menu_page(
-			Whv_Config::Get('variables', 'appName'),															// Page title
-			Whv_Config::Get('variables', 'appName'),															// Menu title
-			'administrator',    																			// Permissions
-			$this->getNameSpace(), 																			// Page slug
-			array($this, 'renderOneighty'), 																// Function to render HTML
+			$_appName,                                 // Page title
+			$_appName,                                 // Menu title
+			'administrator',                           // Permissions
+			$this->getNameSpace(),                     // Page slug
+			array($this, 'renderOneighty'),            // Function to render HTML
 			"{$this->getPluginWebPath()}/".Whv_Config::Get('folders', 'images')."/".Whv_Config::Get('variables', 'pluginName').".png"	// Logo
 		);
 
@@ -957,53 +963,56 @@ class Whv_Actions {
 
 		//Login/Accont
 		add_submenu_page(
-			$this->getNameSpace(),										// Parent slug
-			Whv_Config::Get('variables', 'appName'),						// Page title
-			($this->checkForOneightyAccount() ? 'Account' : 'Login'), 	// Menu title
-			'administrator', 											// Permissions
-			$this->getNameSpace(), 										// Slug
-			array($this, 'renderOneighty')								// Function to render HTML
+			$this->getNameSpace(),                     // Parent slug
+			$_appName,   // Page title
+			($this->checkForOneightyAccount() ? 'Account' : 'Login'),  // Menu title
+			'administrator',                           // Permissions
+			$this->getNameSpace(),                     // Slug
+			array($this, 'renderOneighty')             // Function to render HTML
 		);
 
 		// Existing Content
 		add_submenu_page(
-			$this->getNameSpace(),										// Parent slug
-			Whv_Config::Get('variables', 'appName').' Existing Content',	// Page title
-			'Existing Content', 										// Menu title
-			'administrator', 											// Permissions
-			$this->getNameSpace().'_existing', 							// Slug
-			array($this, 'renderExistingContent')						// Function to render HTML
+			$this->getNameSpace(),                     // Parent slug
+			$_appName.' Existing Content',             // Page title
+			'Existing Content',                        // Menu title
+			'administrator',                           // Permissions
+			$this->getNameSpace().'_existing',         // Slug
+			array($this, 'renderExistingContent')      // Function to render HTML
 		);
 
 		// Search
 		add_submenu_page(
-			$this->getNameSpace(),										// Parent slug
-			Whv_Config::Get('variables', 'appName').' Article Search',		// Page title
-			'Article Search', 											// Menu title
-			'administrator', 											// Permissions
-			$this->getNameSpace().'_search', 							// Slug
-			array($this, 'renderArticleSearch')				    		// Function to render HTML
+			$this->getNameSpace(),                     // Parent slug
+			$_appName.' Article Search',               // Page title
+			'Article Search',                          // Menu title
+			'administrator',                           // Permissions
+			$this->getNameSpace().'_search',           // Slug
+			array($this, 'renderArticleSearch')        // Function to render HTML
 		);
 
 		// Syndicated Content
 		add_submenu_page(
-			$this->getNameSpace(),										// Parent slug
-			Whv_Config::Get('variables', 'appName').' Syndicated Content',	// Page title
-			'Syndicated Content', 										// Menu title
-			'administrator', 											// Permissions
-			$this->getNameSpace().'_syndicated', 						// Slug
-			array($this, 'renderSyndicatedContent')			    		// Function to render HTML
+			$this->getNameSpace(),                     // Parent slug
+			$_appName.' Syndicated Content',           // Page title
+			'Syndicated Content',                      // Menu title
+			'administrator',                           // Permissions
+			$this->getNameSpace().'_syndicated',       // Slug
+			array($this, 'renderSyndicatedContent')    // Function to render HTML
 		);
 
 		// Logout
+		// we need this for permissions, blank menu title keeps it out of the menu
 		add_submenu_page(
-			$this->getNameSpace(),										// Parent slug
-			Whv_Config::Get('variables', 'appName').' Logout',	            // Page title
-			'Logout', 	            									// Menu title
-			'administrator', 											// Permissions
-			$this->getNameSpace().'_logout',    						// Slug
-			array($this, 'renderLogout')	        		    		// Function to render HTML
+			$this->getNameSpace(),                     // Parent slug
+			$_appName.' Logout',                       // Page title
+			'',                                        // Menu title
+			'administrator',                           // Permissions
+			$this->getNameSpace().'_logout',           // Slug
+			array($this, 'renderLogout')               // Function to render HTML
 		);
+		/*
+		 */
 		return $this;
 	}
 
@@ -1815,7 +1824,6 @@ class Whv_Actions {
 	 * @return Actions $this for a fluid and chain-loadable interface
 	 */
 	public function renderOneighty() {
-
 		// Check for POST data
 		if ($this->checkForData('getPostData') && property_exists($this->getPostData(), $this->getNamespace())) {
 
@@ -2886,7 +2894,11 @@ class Whv_Actions {
 	 * @param array $mData
 	 */
 	public function feedJson(array $aData, $bArray = false) {
-
+		if (get_magic_quotes_gpc()) {
+			if ($aData['_method'] == 'post') {
+		//		var_dump($aData); exit();
+			}
+		}
 		// Check for a method
 		if (!isset($aData['_method']) || is_null($aData['_method'])) {
 
@@ -2912,6 +2924,11 @@ class Whv_Actions {
 		stream_context_set_option($rContext, 'ssl', 'verify_peer', false);
 		// Send the request
 		$mResponse = file_get_contents(Whv_Config::Get('feeds', 'jsonRpc'), false, $rContext);
+
+//		if ($aData['_method'] == 'post') {
+//		var_dump($aData);
+//		var_dump($mResponse);exit();
+//		}
 		// Check for data
 		if (!empty($mResponse)) {
 

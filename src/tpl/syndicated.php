@@ -98,7 +98,7 @@ jQuery(document).ready(function($) {
                             <?php if ($oArticle->aSyndicationData[$sMetaProperty]->author_id == $this->getAccount()->id) : ?>
                                 <?php _e('Me') ?>
                             <?php else : ?>
-                                <a target="_blank" href="<?php echo(Whv_Config::Get('urls', 'baseUrl')) ?>/user/<?php echo($oArticle->aSyndicationData[$sMetaProperty]->author_name) ?>">
+                                <a target="_blank" href="<?php echo(Whv_Config::Get('urls', 'baseUrl')) ?>/profile/<?php echo($oArticle->aSyndicationData[$sMetaProperty]->author_name) ?>">
                                     <?php echo($oArticle->aSyndicationData[$sMetaProperty]->author_name) ?>
                                 </a>
                             <?php endif ?>
