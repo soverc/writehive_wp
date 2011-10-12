@@ -3202,6 +3202,9 @@ class Whv_Actions {
 		// and convert its keys to object properties
 		foreach ($aPostData as $sKey => $mValue) {
 
+			if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc()) 
+				$mValue = stripslashes($mValue);
+
 			// Set the property
 			$oPostData->$sKey = $mValue;
 		}
