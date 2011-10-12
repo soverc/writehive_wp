@@ -3202,9 +3202,7 @@ class Whv_Actions {
 		// and convert its keys to object properties
 		foreach ($aPostData as $sKey => $mValue) {
 
-			if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc()) 
-				$mValue = stripslashes($mValue);
-
+			$this->stripMagic($mValue);
 			// Set the property
 			$oPostData->$sKey = $mValue;
 		}
@@ -3215,6 +3213,20 @@ class Whv_Actions {
 		// Return instance
 		return $this;
 	}
+
+	/**
+	* removes effects of Magic Quotes GPC
+	*/
+	public function stripMagic(&$item) {
+		if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc())  {
+		$item = $this->stripslashes_array($item);
+		}
+	}
+
+	public 	function stripslashes_array($array) {
+		return is_array($array) ? array_map( array($this, 'stripslashes_array'), $array) : stripslashes($array);
+	}
+
 
 	/**
 	 * This method sets the current posts in the
