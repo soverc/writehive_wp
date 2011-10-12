@@ -305,7 +305,6 @@ class Whv_Actions {
 					return true;
 
 				} else {
-					die('no');
 
 					// Try to remove the article
 					// from the WordPress DB
