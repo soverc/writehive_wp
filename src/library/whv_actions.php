@@ -92,10 +92,6 @@ class Whv_Actions {
 	 */
 	private function __construct() {
 
-		//if (get_magic_quotes_runtime())
-		//set_magic_quotes_runtime(0);
-		//	echo '1';
-
 		// Check to see if an admin
 		// has logged into the system
 		if (is_admin()) {
@@ -2893,11 +2889,6 @@ class Whv_Actions {
 	 * @param array $mData
 	 */
 	public function feedJson(array $aData, $bArray = false) {
-		if (get_magic_quotes_gpc()) {
-			if ($aData['_method'] == 'post') {
-		//		var_dump($aData); exit();
-			}
-		}
 		// Check for a method
 		if (!isset($aData['_method']) || is_null($aData['_method'])) {
 
