@@ -126,7 +126,7 @@ class Whv_Actions {
 		add_filter('the_author', array($this, 'renderPostAuthor'));
 
 		// Display Post Content
-		add_filter('the_content', array($this, 'renderPostContent'));
+		add_filter('the_content', array($this, 'renderPostContent'), 1);
 
 		// Set all of the functions and controls
 		// Display Post Title
