@@ -27,10 +27,8 @@ jQuery(document).ready(function($) {
 					dataType: 'json', 
 					data: {
 						action: sAjaxAction, 
-						<?php echo($this->getNameSpace()) ?>: {
-							sRoute: 'ajaxRemoveArticle', 
-							iWordPressId: iWordPressId
-						}
+						'<?php echo($this->getNameSpace()) ?>[sRoute]': 'ajaxRemoveArticle',
+						'<?php echo($this->getNameSpace()) ?>[iWordPressId]': iWordPressId
 					}, 
 					
 					success: function(oResponse) {
