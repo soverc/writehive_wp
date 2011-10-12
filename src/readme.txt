@@ -43,6 +43,7 @@ This section describes how to install the plugin and get it working.
 = 1.0.3 =
  * Fixed an issue with some content losing paragraph tags
  * Fixed an issue with magic_quotes_gpc that caused images to disappear
+ * Made an AJAX call work with WP 2.8
 
 = 1.0.2 =
  * Fixed an issue regarding rendering of page titles and one issue with comment forms disappearing.
