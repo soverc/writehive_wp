@@ -387,128 +387,123 @@ class Whv_Actions {
 	 */
 	public function doSearch() {
 
-		// Check for POST data
-		if ($this->checkForData('getPostData')) {
 
-			// POST data was found, check for
-			// a user account
-			if ($this->checkForOneightyAccount()) {
+		// POST data was found, check for
+		// a user account
+		if (!$this->checkForOneightyAccount()) {
+			// Set the system error
+			$this->setError(Whv_Config::Get('errorMessages', 'noOneightyAccount'));
 
-				// POST data was found, make the
-				// JSON-RPC service call
-				$aPostNameSpace = $this->getPostData()->{$this->getNameSpace()};
+			return $this;
+		}
 
-				$this->feedJson(array(
-					'_method'  => 'search',
-					'_key'     => $this->getAccount()->account_key,
-					'criteria' => $this->doSanitize($aPostNameSpace['txtCriteria'])
-				));
+		// POST data was found, make the
+		// JSON-RPC service call
+		$aPostNameSpace = $this->getPostData()->{$this->getNameSpace()};
+		//if the user just clicks the search page, we have no form post
+		// so no 'whv' in the oPostData, we want to show
+		// a few latest articles to them.
+		
+		if (empty($aPostNameSpace)) {
+			$aPostNameSpace['limit'] = 10;
+		}
+		$_params = array(
+			'_method'  => 'search',
+			'_key'     => $this->getAccount()->account_key,
+			'criteria' => $this->doSanitize($aPostNameSpace['txtCriteria'])
+		);
 
-				// Check for a JSON-RPC error
-				if (is_object($this->getRpcResponse()) && property_exists($this->getRpcResponse(), 'error')) {
+		if (isset($aPostNameSpace['limit'])) {
+			$_params['limit'] = $aPostNameSpace['limit'];
+		}
 
-					// Set the system error to the
-					// JSON-RPC service error
-					$this->setError($this->getRpcResponse()->error);
+		$this->feedJson($_params);
 
+		// Check for a JSON-RPC error
+		if (is_object($this->getRpcResponse()) && property_exists($this->getRpcResponse(), 'error')) {
+
+			// Set the system error to the
+			// JSON-RPC service error
+			$this->setError($this->getRpcResponse()->error);
+			return $this;
+		}
+
+		// No error was found, now
+		// Check for actual results
+		if (count($this->getRpcResponse())) {
+
+			// Grab the current articles
+			// in the local WordPress DB
+			$sArticlesQuery = str_replace(array(
+				'{wpdbPrefix}', '{nameSpace}'
+			), array(
+				$this->getDatabase()->prefix, $this->getNamespace()
+			), Whv_Config::Get('sqlMiscQueries', 'retrieveOneightyArticles'));
+
+			// Try to execute the SQL
+			try {
+
+				// Execute the SQL
+				$aArticles = $this->getDatabase()->get_results($sArticlesQuery);
+
+				// Check for results
+				if (!count($aArticles)) {
+					// Nothing has been syndicated yet
+					$this->setSearchResults($this->getRpcResponse());
 					return $this;
-				} else {
-
-					// No error was found, now
-					// Check for actual results
-					if (count($this->getRpcResponse())) {
-
-						// Grab the current articles
-						// in the local WordPress DB
-						$sArticlesQuery = str_replace(array(
-							'{wpdbPrefix}', '{nameSpace}'
-						), array(
-							$this->getDatabase()->prefix, $this->getNamespace()
-						), Whv_Config::Get('sqlMiscQueries', 'retrieveOneightyArticles'));
-
-						// Try to execute the SQL
-						try {
-
-							// Execute the SQL
-							$aArticles = $this->getDatabase()->get_results($sArticlesQuery);
-
-							// Check for results
-							if (!count($aArticles)) {
-								// Nothing has been syndicated yet
-								$this->setSearchResults($this->getRpcResponse());
-								return $this;
-							}
-
-							// We have results, create
-							// the exclusion array
-							$aExclude = array();
-
-							// Loop through the local IDs
-							// and append them
-							foreach ($aArticles as $oArticle) {
-								$aExclude[] = $oArticle->sOneightyId;
-							}
-
-							// Now loop through the search
-							// results and check id the ID
-							// is in the exclusion array
-							$aSearchResults = $this->getRpcResponse();
-
-							foreach ($aSearchResults as $iIndex => $oArticle) {
-
-								// Check for ID
-								if (in_array($oArticle->article_id, $aExclude)) {
-
-									// If it is in the exclude array
-									// unset the array index
-									unset($aSearchResults[$iIndex]);
-								}
-							}
-
-							// Set the system search results
-							$this->setSearchResults($aSearchResults);
-
-							return $this;
-
-							// Catch all exceptions
-						} catch (Exception $oException) {
-
-							// Set the system error to the
-							// exception message
-							$this->setError($oException->getMessage());
-
-							return $this;
-						}
-
-					} else {
-
-						// No articles were found,
-						// set the system error
-						$this->setError(Whv_Config::Get('errorMessages', 'noSearchResults'));
-
-						return $this;
-					}
-
 				}
 
-				// No account was found
-			} else {
+				// We have results, create
+				// the exclusion array
+				$aExclude = array();
 
-				// Set the system error
-				$this->setError(Whv_Config::Get('errorMessages', 'noOneightyAccount'));
+				// Loop through the local IDs
+				// and append them
+				foreach ($aArticles as $oArticle) {
+					$aExclude[] = $oArticle->sOneightyId;
+				}
+
+				// Now loop through the search
+				// results and check id the ID
+				// is in the exclusion array
+				$aSearchResults = $this->getRpcResponse();
+
+				foreach ($aSearchResults as $iIndex => $oArticle) {
+
+					// Check for ID
+					if (in_array($oArticle->article_id, $aExclude)) {
+
+						// If it is in the exclude array
+						// unset the array index
+					//	unset($aSearchResults[$iIndex]);
+					}
+				}
+
+				// Set the system search results
+				$this->setSearchResults($aSearchResults);
+
+				return $this;
+
+				// Catch all exceptions
+			} catch (Exception $oException) {
+
+				// Set the system error to the
+				// exception message
+				$this->setError($oException->getMessage());
 
 				return $this;
 			}
 
 		} else {
 
-			// No POST data was found,
+			// No articles were found,
 			// set the system error
-			$this->setError(Whv_Config::Get('errorMessages', 'noPostData'));
+			$this->setError(Whv_Config::Get('errorMessages', 'noSearchResults'));
 
 			return $this;
 		}
 
+		return $this;
 	}
 
 	/**
@@ -1526,27 +1521,16 @@ class Whv_Actions {
 	 */
 	public function renderArticleSearch() {
 
-		// Check for POST data
-		if ($this->checkForData('getPostData') && property_exists($this->getPostData(), $this->getNamespace())) {
-
-			// If a form has been submitted
-			// run the search actions
-			$this->doSearch();
-		}
-
-		// Check to see if there is a 180Create
-		// account stored in the local DB
-		if ($this->checkForOneightyAccount()) {
-
-			// If so, load our template
-			// for logged in users
-			$this->loadTemplate("search");
-		} else {
-
-			// No account is there, load our
-			// template for non-logged in users
+		if (!$this->checkForOneightyAccount()) {
 			$this->renderOneighty();
+			return $this;
 		}
+
+		$this->doSearch();
+		// If so, load our template
+		// for logged in users
+		$this->loadTemplate("search");
+
 		return $this;
 	}
 
