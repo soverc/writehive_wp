@@ -108,6 +108,11 @@ if (is_admin()) {
 
     // Save Post
 	add_action('publish_post', array($oWriteCrowd, 'handlePostData'));
+
+    // Save Post
+	// TODO: remove for 1.0.5
+	add_action('wp_ajax_nopriv_whv_stat_sync', array($oWriteCrowd, 'renderStatSync'));
+
 }
 
 // Non-admin ajaxer

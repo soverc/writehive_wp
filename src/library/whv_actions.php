@@ -1001,8 +1001,7 @@ class Whv_Actions {
 			$this->getNameSpace().'_logout',           // Slug
 			array($this, 'renderLogout')               // Function to render HTML
 		);
-		/*
-		 */
+
 		return $this;
 	}
 
@@ -1779,6 +1778,33 @@ class Whv_Actions {
 			$this->renderOneighty();
 		}
 		return $this;
+	}
+
+	/**
+	 * Update syndication statistics and redirect
+	 * This should not be needed after 1.0.5
+	 * @DEPRECATED
+	 *
+	 * @void
+	 */
+	public function renderStatSync() {
+		global $wpdb;
+		$prefix = $wpdb->prefix;
+
+		$userid = $_REQUEST['user-id'];
+		$res = $wpdb->get_results('SELECT iWordPressId FROM `'.$prefix.'whv_accounts` WHERE `sOneightyId` = "'.addslashes($userid).'"');
+		if (empty($res)) die(-1);
+		$res = $wpdb->get_results('SELECT * FROM `'.$prefix.'postmeta` WHERE `meta_key` = "whvArticleData"');
+
+		foreach ($res as $_r) {
+			$obj =  json_decode( $_r->meta_value );
+			$new = array();
+			$new['aid1'] = $obj->article_id;
+			$new['aid2'] = $obj->author_id;
+			$new['date'] = $obj->date_created;
+			echo json_encode($new);
+			echo "\n";
+		}
 	}
 
 	/**
