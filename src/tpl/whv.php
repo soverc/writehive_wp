@@ -16,14 +16,18 @@
 					<?php if (empty($this->getAccount()->display_pic)) : ?>
 						<img height="100" src="<?php echo($this->getPluginWebPath().'/'.Whv_Config::Get('folders', 'images')) ?>/no-avatar.jpg">
 					<?php else : ?>
-						<img height="100" src="<?php echo(Whv_Config::Get('urls', 'baseUrl')) ?>/account.img/<?php echo($this->getAccount()->display_pic) ?>">
+						<img height="100" src="<?php echo($this->getAccount()->display_pic) ?>">
 					<?php endif ?>
 				</td>
 				<td valign="top">
 					<table width="100%">
 						<tr>
 							<td>
-								Public Profile: <a href="<?php echo(Whv_Config::Get('urls', 'baseUrl')) ?>/profile/<?php echo($this->getAccount()->display_name) ?>" target="_blank"><?php echo($this->getAccount()->display_name) ?></a>
+								<?php $acct = $this->getAccount(); ?>
+								<?php if(!isset($acct->account_id)) $profLink = $acct->display_name;
+								else $profLink = $acct->account_id.'_'.$acct->first_name.'_'.$acct->last_name.'.html'; ?>
+
+								Public Profile: <a href="<?php echo(Whv_Config::Get('urls', 'baseUrl')) ?>/profile/<?php echo $profLink ?>" target="_blank"><?php echo($this->getAccount()->display_name) ?></a>
 							</td>
 						</tr><tr>
 							<td>

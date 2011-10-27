@@ -85,20 +85,21 @@ jQuery(document).ready(function($) {
 			
 			<?php foreach($this->getArticles() as $oArticle): ?>
                 <?php if (!empty($oArticle->aSyndicationData) && $oArticle->aSyndicationData[str_replace('{nameSpace}', $this->getNameSpace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicated'))]) : ?>
+					<?php $synData = $oArticle->aSyndicationData[$sMetaProperty]; ?>
                     <tr id="<?php echo($this->getNameSpace()) ?>-article-<?php echo($oArticle->ID) ?>">
                         <td class="post-title">
                             <a href="<?php echo(get_bloginfo('url')) ?>/?p=<?php echo($oArticle->ID) ?>">
                                 <?php echo esc_html($oArticle->aSyndicationData[$sMetaProperty]->title) ?>
                             </a>
                         </td><td>
-                            <?php echo($oArticle->aSyndicationData[$sMetaProperty]->cat_label) ?>
+                            <?php echo($synData->cat_label) ?>
                         </td><td>
-                            <?php if ($oArticle->aSyndicationData[$sMetaProperty]->author_id == $this->getAccount()->id) : ?>
+                            <?php if ($synData->author_id == $this->getAccount()->id) : ?>
                                 <?php _e('Me') ?>
                             <?php else : ?>
-                                <a target="_blank" href="<?php echo(Whv_Config::Get('urls', 'baseUrl')) ?>/profile/<?php echo($oArticle->aSyndicationData[$sMetaProperty]->author_name) ?>">
-                                    <?php echo($oArticle->aSyndicationData[$sMetaProperty]->author_name) ?>
-                                </a>
+								<?php if(!isset($synData->account_id)) $profLink = $synData->author_name;
+								else $profLink = $synData->account_id.'_'.$synData->author_name.'.html'; ?>
+                                <a target="_blank" href="<?php echo(Whv_Config::Get('urls', 'baseUrl')) ?>/profile/<?php echo $profLink ?>"><?php echo($synData->author_name) ?></a>
                             <?php endif ?>
                         </td><td>
                             <?php echo(date('F jS, Y', strtotime($oArticle->aSyndicationData[$sMetaProperty]->date_created)))?>
