@@ -1057,6 +1057,7 @@ class Whv_Actions {
 				$aArticles = get_posts(array(
 					'post_type'   => 'post',
 					'post_status' => 'publish',
+					'numberposts' => 60,
 					'meta_query'  => array(
 						array(
 							'key'     => str_replace('{nameSpace}', $this->getNamespace(), Whv_Config::Get('wordPress', 'postMetaKeySyndicated')),
@@ -1387,7 +1388,8 @@ class Whv_Actions {
 		// into the system
 		$aPosts   = get_posts(array(
 			'post_type'   => 'post',
-			'post_status' => 'publish'
+			'post_status' => 'publish',
+			'numberposts' => 60
 		));
 
 		// Indices to remove array
