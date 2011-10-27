@@ -90,7 +90,7 @@
 	"enableAllowFree":"0",
 	"enableArticleTitlePrefix":"1",
 	"enableCommentEngine":"1",
-	"enableCostSelect":"1",
+	"enableCostSelect":"0",
 	"enableGroups":"0",
 	"enablePhpErrorReporting":"0",
 	"enablePrivacySettings":"0",
