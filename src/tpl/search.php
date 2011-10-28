@@ -167,7 +167,7 @@ jQuery(document).ready(function($) {
 					</div>
 					<div style="height:10em; overflow:hidden;">
 					<?php if ($oArticle->display_pic): ?>
-					<img style="float:left;padding:0.2em 0.7em;" height="60" src="<?php echo(Whv_Config::Get('urls', 'baseUrl')) ?>/account.img/<?php echo($oArticle->display_pic) ?>">
+					<img style="float:left;padding:0.2em 0.7em;" height="60" src="<?php echo($oArticle->display_pic) ?>">
 					<?php else: ?>
 					<img style="float:left;padding:0.2em 0.7em;" height="60" src="<?php echo(Whv_Config::Get('urls', 'baseUrl')) ?>/media/icons/default/user_icon.png">
 					<?php endif; ?>
