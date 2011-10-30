@@ -40,6 +40,11 @@ This section describes how to install the plugin and get it working.
 
 
 == Changelog ==
+= 1.0.4 =
+ * Fix user profile pic changes.
+ * Update search page formatting of results.
+ * Updated existing content and syndicated content page to show 60 entries instead of 5
+
 = 1.0.3 =
  * Fixed an issue with some content losing paragraph tags
  * Fixed an issue with magic_quotes_gpc that caused images to disappear

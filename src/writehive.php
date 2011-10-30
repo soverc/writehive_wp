@@ -5,7 +5,7 @@
  * syndication services inside of WordPress.
  * 
  * @author WriteHive <support@writehive.com>
- * @version 1.0.3
+ * @version 1.0.4
  * @link https://www.writehive.com/
  * @copyright 2011 WriteCrowd <https://www.writehive.com/>
  * @license GPL 3.0
@@ -30,7 +30,7 @@
  * Plugin Name: WriteHive Syndication
  * Plugin URI: https://www.writehive.com/
  * Description: Provides functionality necessary to use your WriteHive account inside of WordPress.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: WriteHive
  * Author URI: https://www.writehive.com/
  * License: GPL 3.0
